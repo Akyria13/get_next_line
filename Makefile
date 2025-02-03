@@ -7,7 +7,7 @@ NAME			:= 		get_next_line.a
 
 AR				:= 		ar -rcs
 CC				:= 		cc
-CFLAGS			:= 		-Wall -Wextra -Werror -MD -MP
+CFLAGS			:= 		-Wall -Wextra -Werror -MD -MP -g3
 
 
 SRC				:=		$(addsuffix .c, \

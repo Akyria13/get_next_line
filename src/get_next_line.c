@@ -6,7 +6,7 @@
 /*   By: jowagner <jowagner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 12:29:31 by jowagner          #+#    #+#             */
-/*   Updated: 2025/01/31 20:40:34 by jowagner         ###   ########.fr       */
+/*   Updated: 2025/02/03 20:06:39 by jowagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,88 +14,94 @@
 
 char	*ft_strchr(const char *s, int c)
 {
-	int	i;
-
-	if (!s)
-		return (NULL);
-	i = 0;
-	while (s[i] != '\0')
+	printf("s = %s\n", s);
+	while (s != NULL && *s)
 	{
-		if (s[i] == '\n')
-			return ((char *)&s[i]);
-		i++;
+		if (*s == (char)c)
+			return ((char *)s);
+		s++;
 	}
 	return (NULL);
 }
 
-ssize_t	ft_linelen(const char *str)
+char	*new_line(char *stack)
 {
-	ssize_t	i;
+	char	*new_line;
+	size_t	i;
+	size_t	j;
 
-	if (!str)
-		return (0);
 	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '\n')
-			return (i + 1);
+	while (stack[i] && stack[i] != '\n')
 		i++;
-	}
-	return (i);
+	if (!stack[i])
+		return (free(stack), NULL);
+	new_line = malloc(ft_strlen(stack) - i + 1);
+	if (!new_line)
+		return (NULL);
+	i++;
+	j = 0;
+	while (stack[i])
+		new_line[j++] = stack[i++];
+	new_line[j] = '\0';
+	free(stack);
+	return (new_line);
 }
 
-static char	*str_extract(const char *buffer)
+char	*extract_line(const char *stack)
 {
-	char	*output;
-	size_t	len;
+	char	*line;
+	size_t	i;
 
-	if (!buffer || !ft_strchr(buffer, '\n'))
+	i = 0;
+	while (stack[i] && stack[i] != '\0')
+		i++;
+	if (stack[i] == '\n')
+		i++;
+	line = malloc(i + 1);
+	if (!line)
 		return (NULL);
-	len = ft_linelen(buffer) + 1;
-	output = malloc(sizeof(char) * (len + 1));
-	if (!output)
-		return (NULL);
-	ft_memmove(output, buffer, len);
-	output[len] = '\0';
-	return (output);
+	i = 0;
+	while (stack[i] && stack[i] != '\n')
+	{
+		line[i] = stack[i];
+		i++;
+	}
+	if (stack[i] == '\n')
+	{
+		line[i] = '\n';
+		i++;
+	}
+	line[i] = '\0';
+	return (line);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	buffer[BUFFER_SIZE + 1];
-	char		*output;
+	static char	*stack;
+	char		*line;
+	char		*buffer;
 	ssize_t		bytes_read;
-	size_t		line_length;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	while (1)
+	buffer = malloc(BUFFER_SIZE + 1);
+	if (!buffer)
+		return (NULL);
+	bytes_read = 1;
+	while (!ft_strchr(stack, '\n') && bytes_read > 0)
 	{
+		printf("coucou\n");
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
-		if (bytes_read <= 0)
-		{
-			// output = ft_strdup(buffer);
-			// buffer[0] = '\0';
-			return (output);
-		}
-		buffer[bytes_read + ft_strlen(buffer)] = '\0';
+		if (bytes_read < 0)
+			return (free(buffer), NULL);
+		buffer[bytes_read] = '\0';
+		stack = ft_strjoin(stack, buffer);
+		printf("stack = %s\n", stack);
 	}
-	// line_length = ft_linelen(buffer);
-	// output = str_extract(buffer);
-	// ft_memmove(buffer, buffer + line_length, BUFFER_SIZE);
-	// buffer[BUFFER_SIZE] = '\0';
-	return (output);
+	free(buffer);
+	if (!stack)
+		return (NULL);
+	line = extract_line(stack);
+	stack = new_line(stack);
+	return (line);
 }
-
-// char	*get_next_line(int fd)
-// {
-// 	static char	buffer[BUFFER_SIZE + 1];
-// 	char		*output;
-
-// 	if (fd < 0 || BUFFER_SIZE <= 0)
-// 		return (NULL);
-// 	output = read_and_extract(fd, buffer);
-// 	if (!output)
-// 		return (NULL);
-// 	return (output);
-// }
