@@ -6,7 +6,7 @@
 /*   By: jowagner <jowagner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 12:29:31 by jowagner          #+#    #+#             */
-/*   Updated: 2025/02/03 22:06:22 by jowagner         ###   ########.fr       */
+/*   Updated: 2025/02/03 22:09:49 by jowagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	*ft_strchr(const char *s, int c)
 {
-	printf("s = %s\n", s);
+	// printf("strchr = %s\n", s);
 	while (s != NULL && *s)
 	{
 		if (*s == (char)c)
@@ -31,10 +31,11 @@ char	*new_line(char *stack)
 	size_t	j;
 
 	i = 0;
+	// printf("stack = %s\n", stack);
 	while (stack[i] && stack[i] != '\n')
 		i++;
-	if (!stack[i])
-		return (free(stack), NULL);
+	// if (!stack[i])
+	//	return (free(stack), NULL);
 	new_line = malloc(ft_strlen(stack) - i + 1);
 	if (!new_line)
 		return (NULL);
@@ -52,7 +53,10 @@ char	*extract_line(const char *stack)
 	char	*line;
 	size_t	i;
 
+	line = NULL;
 	i = 0;
+	// printf("--EXTRACT LINE---\n");
+	// printf("stack = %s\n", stack);
 	while (stack[i] && stack[i] != '\0')
 		i++;
 	if (stack[i] == '\n')
@@ -72,6 +76,8 @@ char	*extract_line(const char *stack)
 		i++;
 	}
 	line[i] = '\0';
+	// printf("line = %s\n", line);
+	// printf("---FIN EXTRACT LINE----\n");
 	return (line);
 }
 
@@ -82,17 +88,23 @@ char	*get_next_line(int fd)
 	char		*buffer;
 	ssize_t		bytes_read;
 
+	// int			i;
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	buffer = malloc(BUFFER_SIZE + 1);
 	if (!buffer)
 		return (NULL);
-	bytes_read = 1;
-	while (!ft_strchr(stack, '\n') && bytes_read > 0)
+	//	bytes_read = 1;
+	//	while (!ft_strchr(stack, '\n') && bytes_read > 0
+	// i = 0;
+	while (1)
 	{
-		// printf("coucou\n");
+		//	i++;
+		if (ft_strchr(stack, '\n') != NULL)
+			break ;
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
-		if (bytes_read < 0)
+		// printf("%ld\n", bytes_read);
+		if (bytes_read <= 0)
 			return (free(buffer), NULL);
 		buffer[bytes_read] = '\0';
 		stack = ft_strjoin(stack, buffer);
@@ -102,6 +114,13 @@ char	*get_next_line(int fd)
 	if (!stack)
 		return (NULL);
 	line = extract_line(stack);
+	// printf("line = %s\n", line);
 	stack = new_line(stack);
+	if (ft_strlen(stack) == 0)
+	{
+		free(stack);
+		stack = NULL;
+	}
+	// printf("stack = %s\n", stack);
 	return (line);
 }
