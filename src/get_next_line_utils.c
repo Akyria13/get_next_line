@@ -6,7 +6,7 @@
 /*   By: jowagner <jowagner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 14:37:01 by jowagner          #+#    #+#             */
-/*   Updated: 2025/02/03 20:12:22 by jowagner         ###   ########.fr       */
+/*   Updated: 2025/02/03 22:06:48 by jowagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 
 	if (!s1 || !s2)
 	{
-		printf("COUCOU\n");
+		// printf("COUCOU\n");
 		return (NULL);
 	}
 	result = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);

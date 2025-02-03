@@ -6,7 +6,7 @@
 /*   By: jowagner <jowagner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 12:29:31 by jowagner          #+#    #+#             */
-/*   Updated: 2025/02/03 20:06:39 by jowagner         ###   ########.fr       */
+/*   Updated: 2025/02/03 22:06:22 by jowagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,13 +90,13 @@ char	*get_next_line(int fd)
 	bytes_read = 1;
 	while (!ft_strchr(stack, '\n') && bytes_read > 0)
 	{
-		printf("coucou\n");
+		// printf("coucou\n");
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		if (bytes_read < 0)
 			return (free(buffer), NULL);
 		buffer[bytes_read] = '\0';
 		stack = ft_strjoin(stack, buffer);
-		printf("stack = %s\n", stack);
+		// printf("stack = %s\n", stack);
 	}
 	free(buffer);
 	if (!stack)
