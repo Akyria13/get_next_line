@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jowagner <jowagner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 12:29:31 by jowagner          #+#    #+#             */
-/*   Updated: 2025/02/13 16:27:49 by jowagner         ###   ########.fr       */
+/*   Updated: 2025/02/13 16:27:36 by jowagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 static char	*extract_line(char *stack)
 {
@@ -62,12 +62,12 @@ static char	*new_line(char *stack)
 	return (new_line);
 }
 
-static char	*read_me(int fd, char *stack)
+char	*read_me(int fd, char *stack)
 {
 	char	*buffer;
 	ssize_t	bytes_read;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0 || fd >= FD_MAX)
 		return (NULL);
 	buffer = malloc(BUFFER_SIZE + 1);
 	if (!buffer)
@@ -92,13 +92,13 @@ static char	*read_me(int fd, char *stack)
 
 char	*get_next_line(int fd)
 {
-	static char	*stack;
+	static char	*stack[FD_MAX];
 	char		*line;
 
-	stack = read_me(fd, stack);
-	if (!stack || *stack == '\0')
-		return (free_strs(NULL, stack), NULL);
-	line = extract_line(stack);
-	stack = new_line(stack);
+	stack[fd] = read_me(fd, stack[fd]);
+	if (!stack[fd] || *stack[fd] == '\0')
+		return (free_strs(NULL, stack[fd]), NULL);
+	line = extract_line(stack[fd]);
+	stack[fd] = new_line(stack[fd]);
 	return (line);
 }
