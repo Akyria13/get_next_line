@@ -6,12 +6,55 @@
 /*   By: jowagner <jowagner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 14:37:01 by jowagner          #+#    #+#             */
-/*   Updated: 2025/02/04 22:22:25 by jowagner         ###   ########.fr       */
+/*   Updated: 2025/02/17 18:15:03 by jowagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
+/**
+ * @brief Calculates the length of the string str.
+ *
+ * @param str The string to measure.
+ * @return The number of characters in str, excluding the null terminator.
+ */
+size_t	ft_strlen(const char *str)
+{
+	size_t	i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
+
+/**
+ * @brief Locates the first occurrence of the character c in the string s.
+ *
+ * @param s The string to be searched.
+ * @param c The character to locate (converted to a char).
+ * @return A pointer to the first occurrence of c in s,
+ * or NULL if c is not found.
+ */
+char	*ft_strchr(const char *s, int c)
+{
+	while (s != NULL && *s)
+	{
+		if (*s == (char)c)
+			return ((char *)s);
+		s++;
+	}
+	return (NULL);
+}
+
+/**
+ * @brief Concatenates two strings into a newly allocated string.
+ *
+ * @param s1 The first string to concatenate. Will be freed.
+ * @param s2 The second string to concatenate.
+ * @return A pointer to the newly allocated string containing
+ * the concatenation of s1 and s2, or NULL if the allocation fails.
+ */
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*result;
@@ -30,51 +73,29 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		return (NULL);
 	i = 0;
 	j = 0;
-	while (s1 != NULL && s1[i] != '\0')
+	while (s1 != NULL && s1[i])
 		result[j++] = s1[i++];
 	i = 0;
-	while (s2 != NULL && s2[i] != '\0')
+	while (s2 != NULL && s2[i])
 		result[j++] = s2[i++];
+	free((void *)s1);
 	result[j] = '\0';
-	// free((void *)s1);
 	return (result);
 }
 
-size_t	ft_strlen(const char *str)
+/**
+ * @brief Frees the memory pointed to by two strings.
+ *
+ * @param str1 The first string to free (buffer).
+ * @param str2 The second string to free (stack).
+ */
+void	free_strs(char *str1, char *str2)
 {
-	size_t	i;
-
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
-}
-
-void	*ft_memset(void *s, int c, size_t n)
-{
-	size_t			i;
-	unsigned char	*ptr;
-
-	i = 0;
-	ptr = (unsigned char *)s;
-	while (i < n)
+	if (str1)
+		free(str1);
+	if (str2)
 	{
-		ptr[i] = (unsigned char)c;
-		i++;
+		free(str2);
+		str2 = NULL;
 	}
-	return (s);
 }
-
-// char	*ft_strdup(const char *s)
-// {
-// 	int		s_len;
-// 	char	*copy;
-
-// 	s_len = ft_strlen(s);
-// 	copy = malloc(sizeof(char) * (s_len + 1));
-// 	if (!copy)
-// 		return (NULL);
-// 	ft_memcpy(copy, s, s_len);
-// 	copy[s_len] = '\0';
-// 	return (copy);
-// }

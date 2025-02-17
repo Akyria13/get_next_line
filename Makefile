@@ -11,9 +11,12 @@ CFLAGS			:= 		-Wall -Wextra -Werror -MD -MP -g3
 
 
 SRC				:=		$(addsuffix .c, \
-						main \
 						get_next_line \
 						get_next_line_utils)
+
+SRC_BONUS		:=		$(addsuffix .c, \
+						get_next_line_bonus \
+						get_next_line_utils_bonus)
 
 ########################################################################################################################
 #                                                      DIRECTORY                                                       #
@@ -24,6 +27,7 @@ SRC_PATH		:=		src/
 OBJ_DIR			:= 		obj/
 
 OBJ				:= 		$(SRC:%.c=$(OBJ_DIR)%.o)
+OBJ_BONUS 		:= 		$(SRC_BONUS:%.c=$(OBJ_DIR)%.o)
 DEP				:=		$(OBJ:%.o=%.d)
 
 -include $(DEP)
@@ -33,6 +37,12 @@ DEP				:=		$(OBJ:%.o=%.d)
 ########################################################################################################################
 
 all : 					.print_header $(NAME)
+
+bonus :					.print_header $(OBJ_BONUS)
+							@printf "%-50b%b" "  $(YELLOW)[$(NAME) bonus version] :$(RESET)" "\n"
+							@printf "%-50b%b" "  => $(BOLD_GREEN)Created$(RESET)" $(call PROGRESS_BAR) "$(BOLD_GREEN)[✓]$(RESET)\n"
+							@$(AR) -o $(NAME) $(OBJ_BONUS)
+							$(call SEPARATOR)
 
 clean :					.print_header
 							@printf "%-50b%b" "  $(YELLOW)[get_next_line/$(OBJ_DIR)] :$(RESET)" "\n"
@@ -59,7 +69,7 @@ re : 					.print_header fclean all $(NAME)
 #                                                       COMMANDS                                                       #
 ########################################################################################################################
 
-$(NAME) 		: 		$(OBJ)
+$(NAME) 			: 	$(OBJ)
 							@printf "%-50b%b" "  $(YELLOW)[$(NAME)] :$(RESET)" "\n"
 							@printf "%-50b%b" "  => $(BOLD_GREEN)Created$(RESET)" $(call PROGRESS_BAR) "$(BOLD_GREEN)[✓]$(RESET)\n"
 							@$(AR) -o $(NAME) $(OBJ)
