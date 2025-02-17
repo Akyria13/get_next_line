@@ -40,3 +40,7 @@ The function `get_next_line(int fd)` is capable of :
 ---
 
 ![get_next_line_drawio](https://github.com/user-attachments/assets/463c5b55-ac41-499e-8d0e-7cd3d1901576)
+
+---
+
+A special thanks to ![Axiaaa](https://github.com/Axiaaa) for her help. 🙏
