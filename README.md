@@ -43,4 +43,4 @@ The function `get_next_line(int fd)` is capable of :
 
 ---
 
-A special thanks to ![Axiaaa](https://github.com/Axiaaa) for her help. 🙏
+A special thanks to [**Axiaaa**](https://github.com/Axiaaa) for her help. 🙏
