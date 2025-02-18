@@ -6,7 +6,7 @@
 /*   By: jowagner <jowagner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 12:29:31 by jowagner          #+#    #+#             */
-/*   Updated: 2025/02/17 18:13:23 by jowagner         ###   ########.fr       */
+/*   Updated: 2025/02/18 16:42:53 by jowagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ char	*read_files(int fd, char *stack)
 			break ;
 		buffer[bytes_read] = '\0';
 		stack = ft_strjoin(stack, buffer);
-		if (!stack)
+		if (NULL == stack)
 			return (free_strs(buffer, stack), NULL);
 	}
 	free(buffer);
@@ -122,6 +122,8 @@ char	*get_next_line(int fd)
 	static char	*stack[FD_MAX];
 	char		*line;
 
+	if (fd < 0)
+		return (NULL);
 	stack[fd] = read_files(fd, stack[fd]);
 	if (!stack[fd] || *stack[fd] == '\0')
 	{
