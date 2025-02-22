@@ -6,7 +6,7 @@
 /*   By: jowagner <jowagner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 12:29:31 by jowagner          #+#    #+#             */
-/*   Updated: 2025/02/18 16:43:16 by jowagner         ###   ########.fr       */
+/*   Updated: 2025/02/22 01:24:44 by jowagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,6 @@ static char	*read_files(int fd, char *stack)
 	char	*buffer;
 	ssize_t	bytes_read;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (NULL);
 	buffer = malloc(BUFFER_SIZE + 1);
 	if (!buffer)
 		return (NULL);
@@ -104,7 +102,10 @@ static char	*read_files(int fd, char *stack)
 		buffer[bytes_read] = '\0';
 		stack = ft_strjoin(stack, buffer);
 		if (NULL == stack)
-			return (free_strs(buffer, stack), NULL);
+		{
+			free_strs(stack, buffer);
+			return (NULL);
+		}
 	}
 	free(buffer);
 	return (stack);
@@ -122,6 +123,8 @@ char	*get_next_line(int fd)
 	static char	*stack;
 	char		*line;
 
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
 	stack = read_files(fd, stack);
 	if (!stack || *stack == '\0')
 		return (free_strs(NULL, stack), NULL);
