@@ -6,7 +6,7 @@
 /*   By: jowagner <jowagner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 14:37:01 by jowagner          #+#    #+#             */
-/*   Updated: 2025/02/24 23:07:43 by jowagner         ###   ########.fr       */
+/*   Updated: 2025/02/24 23:54:36 by jowagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,4 +81,21 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	free((void *)s1);
 	result[j] = '\0';
 	return (result);
+}
+
+/**
+ * @brief Frees the memory pointed to by two strings.
+ *
+ * @param str1 The first string to free (buffer).
+ * @param str2 The second string to free (stack).
+ */
+void	free_strs(char *str1, char *str2)
+{
+	if (str1)
+		free(str1);
+	if (str2)
+	{
+		free(str2);
+		str2 = NULL;
+	}
 }
